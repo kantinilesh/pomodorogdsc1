@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> 
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">    
+        <link rel="stylesheet" type="text/css" href="pomorado.css">
+        <title>Page Title</title>
+    </head>
+    <body>
+      <table id="timer-table; position:absolute;"> 
+        <th>Sessions Completed</th>
+        <td id="sessionsCounter">0</td>
+    </table> 
+ <div class="container"><h2>POMODORO TIMER</h2>
+  <div class="mode-btns-box">
+    <button class="focus-btn btn-focus">Work</button>    
+    <button class="short-break-btn">Short Break</button>
+    <button class="long-break-btn">Long Break</button>
+  </div>   
+  <h1 class="timer"></h1>
+  <div class="btns">
+    <button class="start-btn">Start</button> 
+    <button class="pause-btn">Pause</button>       
+    <button class="reset-btn">Reset</button>   
+        
+  </div>
+</div>
+<script>
+ let allModBtn = document.querySelectorAll('.container .mode-btns-box button');
+let focusBtn = document.querySelector('.container .mode-btns-box .focus-btn');
+let shortBreakBtn = document.querySelector('.container .mode-btns-box .short-break-btn');
+let longBreakBtn = document.querySelector('.container .mode-btns-box .long-break-btn');
+let startBtn = document.querySelector('.container .btns .start-btn');
+let pauseBtn = document.querySelector('.container .btns .pause-btn');
+let resetBtn = document.querySelector('.container .btns .reset-btn');
+let time = document.querySelector('.container .timer');
+
+let setIn;
+let count = 59;
+let paused = true;
+let minCount = 24;
+let active = "focus";
+
+time.innerHTML = `${minCount + 1}:00`;
+
+let appendZero =(value)=>{
+  value = value < 10 ? "0" + value : value;   
+  return value;
+}
+
+resetBtn.addEventListener('click',(resetTime =()=>{
+  pauseTimer();
+  switch(active){
+  case "long":
+     minCount = 14;
+     break;
+  case "short":
+     minCount = 4;
+     break;
+  default:
+     minCount = 24;
+     break;
+  }
+  count = 59;
+  time.innerHTML = `${minCount + 1}:00`;
+})
+)
+
+let removeBtnFocus =()=>{
+ allModBtn.forEach((button)=>{
+   button.classList.remove('btn-focus');
+ })     
+}
+
+focusBtn.addEventListener('click',()=>{
+  active = "focus";    
+ removeBtnFocus();
+ focusBtn.classList.add('btn-focus');
+ pauseTimer();
+ count = 59;
+ minCount = 24;
+ time.innerHTML = `${minCount + 1}:00`;
+})
+
+shortBreakBtn.addEventListener('click', () => {
+  active = "short";  
+  removeBtnFocus();
+  shortBreakBtn.classList.add('btn-focus');
+  pauseTimer();
+  count = 59;
+  minCount = 4;
+  time.innerHTML = `${minCount + 1}:00`;
+})
+
+longBreakBtn.addEventListener('click', () => {
+  active = "long";  
+  removeBtnFocus();
+  longBreakBtn.classList.add('btn-focus');
+  pauseTimer();
+  count = 59;
+  minCount = 14;
+  time.innerHTML = `${minCount + 1}:00`;
+})
+
+pauseBtn.addEventListener('click',(pauseTimer =()=>{
+   paused = true;    
+   clearInterval(setIn);
+   resetBtn.style.display = 'none';
+   pauseBtn.style.display = 'none';
+   startBtn.style.display = 'block';
+}) 
+);
+
+startBtn.addEventListener('click',()=>{
+  resetBtn.style.display = 'block';
+  pauseBtn.style.display = 'block';
+  startBtn.style.display = 'none';  
+  
+  if(paused){
+   paused = false;
+   time.innerHTML = `${appendZero(minCount)}:${appendZero(count)}`;
+   setIn = setInterval(()=>{
+    count--;
+    time.innerHTML = `${appendZero(minCount)}:${appendZero(count)}`;
+    if(count == 0){
+     if(minCount != 0){
+        minCount--;    
+        count = 60;
+     }else{
+        clearInterval(setIn)
+     }   
+    }
+   },1000)
+  }
+})  
+let sessions = 0;
+
+function incrementSessionCounter() {
+  sessions++;
+  document.getElementById("sessionsCounter").innerHTML = sessions;
+}
+
+resetBtn.addEventListener('click', () => {
+  // ...
+  incrementSessionCounter();
+  // ...
+});
+
+focusBtn.addEventListener('click', () => {
+  // ...
+  incrementSessionCounter();
+  // ...
+});
+
+shortBreakBtn.addEventListener('click', () => {
+  // ...
+  incrementSessionCounter();
+  // ...
+});
+
+longBreakBtn.addEventListener('click', () => {
+  // ...
+  incrementSessionCounter();
+  // ...
+});
+
+
+</script>          
+    </body>
+</html>
