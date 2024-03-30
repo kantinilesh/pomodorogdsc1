@@ -1,3 +1,4 @@
 #Pomodoro Timer using HTML CSS JS for Google Developer Students Club
 #Inspired - W3Schools and GeeksForGeeks
 #Javascript code help taken from JavascriptGuy
+#The default timer for pomodoro technique is 25 minutes so apart from adding edit button to vhange the number we keot it to default as 25 only
